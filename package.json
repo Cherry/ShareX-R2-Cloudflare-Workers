@@ -1,0 +1,41 @@
+{
+	"name": "sharex-r2-cloudflare-workers",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Cloudflare Worker to handle uploads from ShareX to R2",
+	"homepage": "https://github.com/Cherry/sharex-r2-cloudflare-workers#readme",
+	"bugs": {
+		"url": "https://github.com/Cherry/sharex-r2-cloudflare-workers/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Cherry/sharex-r2-cloudflare-workers.git"
+	},
+	"license": "MIT",
+	"author": "James Ross <james@jross.me> (https://jross.me)",
+	"main": "index.js",
+	"scripts": {
+		"build": "esbuild src/index.mjs --format=esm --platform=neutral --bundle --minify --sourcemap --outfile=dist/index.mjs",
+		"dev": "npx miniflare --kv-persist -w",
+		"lint": "npm run lint:js && npm run lint:json",
+		"lint:js": "eslint \"src/**/*.{js,mjs}\"",
+		"lint:js:fix": "eslint \"src/**/*.{js,mjs}\" --fix",
+		"lint:json": "eslint \"**/*.json\"",
+		"publish": "wrangler publish",
+		"test": "npm run lint"
+	},
+	"devDependencies": {
+		"@nodecraft/eslint-config": "17.0.0",
+		"esbuild": "0.14.34",
+		"eslint": "8.13.0",
+		"eslint-plugin-import": "2.26.0",
+		"eslint-plugin-json": "3.1.0",
+		"eslint-plugin-node": "11.1.0",
+		"eslint-plugin-unicorn": "42.0.0",
+		"itty-router": "2.6.1"
+	},
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	}
+}
