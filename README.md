@@ -21,11 +21,11 @@ This repo pairs with the blog post found at https://jross.me/cloudflare-r2-share
 	- Zone - Workers Routes - Edit
 
 	- Then be sure to give it access to the application account/zone resources you want to use
+![Cloudflare API token for Wrangler R2 access](docs/cloudflare-api-token.png?raw=true)
 
-- If using GitHub Actions (like this repo), simply push your changees and the worker will be automatically deployed - see your Actions log for any errors.
+- If using GitHub Actions (like this repo), simply push your changes and the worker will be automatically deployed - see your Actions log for any errors.
 - (optional) If you want to publish manually, or use some other CI other than GitHub Actions, you will need to manually setup the `AUTH_KEY` secret (via the Workers UI, or `wrangler secret put`), and then run `npm run publish`.
 
-![Cloudflare API token for Wrangler R2 access](docs/cloudflare-api-token.png?raw=true)
 
 ## ShareX Setup
 
