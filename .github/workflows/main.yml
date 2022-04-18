@@ -59,8 +59,8 @@ jobs:
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-          AUTH_KEY: ${{ secrets.AUTH_KEY }}
-        secrets: |
-          AUTH_KEY
+          secrets: |
+            AUTH_KEY
         env:
           NODE_ENV: production
+          AUTH_KEY: ${{ secrets.AUTH_KEY }}
