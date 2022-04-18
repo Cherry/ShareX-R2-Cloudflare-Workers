@@ -4,7 +4,8 @@ const router = Router();
 
 // handle authentication
 const authMiddleware = (request, env) => {
-	if(request.headers?.get("x-auth-key") !== env.AUTHKEY){
+	const url = new URL(request.url);
+	if(request.headers?.get("x-auth-key") !== env.AUTHKEY && url.searchParams.get("authkey") !== env.AUTHKEY){
 		return new Response(JSON.stringify({
 			success: false,
 			error: 'Missing auth',
@@ -26,7 +27,7 @@ router.post("/upload", authMiddleware, async (request, env) => {
 		fileslug = crypto.randomUUID();
 	}
 	const date = new Date();
-	const folder = `${date.getFullYear()}/${('0' + date.getMonth()).slice(-2)}/`;
+	const folder = `${date.getFullYear()}/${('0' + date.getMonth()).slice(-2)}`;
 	const filename = `${folder}/${fileslug}`;
 
 	// ensure content-length and content-type headers are present
@@ -69,8 +70,8 @@ router.post("/upload", authMiddleware, async (request, env) => {
 
 	// return the image url to ShareX
 	const returnUrl = new URL(request.url);
+	returnUrl.searchParams.delete('filename');
 	returnUrl.pathname = `/file/${filename}`;
-	console.log('Success', returnUrl.href);
 	return new Response(JSON.stringify({
 		success: true,
 		image: returnUrl.href,
@@ -83,8 +84,10 @@ router.post("/upload", authMiddleware, async (request, env) => {
 
 // handle file retrieval
 const getFile = async (request, env, ctx) => {
-	const params = request.params;
-	if(!params?.id){
+	const url = new URL(request.url);
+	const id = url.pathname.slice(6);
+	console.log('Lookup', id);
+	if(!id){
 		return new Response(JSON.stringify({
 			success: false,
 			error: 'Missing ID',
@@ -100,8 +103,8 @@ const getFile = async (request, env, ctx) => {
 	let response = await cache.match(request);
 	if(!response){
 		// no cache match, try reading from R2
-		const {value, metadata} = await env.R2_BUCKET.get(params.id);
-		if(value === null){
+		const file = await env.R2_BUCKET.get(id);
+		if(file === null){
 			return new Response(JSON.stringify({
 				success: false,
 				error: 'Object Not Found',
@@ -113,11 +116,11 @@ const getFile = async (request, env, ctx) => {
 			});
 		}
 
-		response = new Response(value, {
+		response = new Response(await file.arrayBuffer(), {
 			headers: {
 				'cache-control': 'public, max-age=604800',
-				'content-type': metadata?.httpMetadata?.contentType,
-				'etag': metadata.eTag,
+				'content-type': file.httpMetadata?.contentType,
+				'etag': file.httpEtag,
 			},
 		});
 
@@ -128,7 +131,16 @@ const getFile = async (request, env, ctx) => {
 	return response;
 };
 router.get("/upload/:id", getFile);
-router.get("/file/:id", getFile);
+router.get("/file/*", getFile);
+
+router.get('/files/list', authMiddleware, async (request, env) => {
+	const items = await env.R2_BUCKET.list({limit: 1000});
+	return new Response(JSON.stringify(items, null, 2), {
+		headers: {
+			'content-type': 'application/json',
+		},
+	});
+});
 
 // 404 everything else
 router.all('*', () => new Response(JSON.stringify({
