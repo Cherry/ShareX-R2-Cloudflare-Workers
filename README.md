@@ -4,9 +4,11 @@ This repo pairs with the blog post found at https://jross.me/cloudflare-r2-share
 
 ## Worker and R2 Setup
 
-- Run `wrangler r2 bucket create <bucket name>`. For the purpose of this example, I'll be using `sharex-files`.
+- Ensure you have wrangler installed and configured. See [here](https://developers.cloudflare.com/workers/get-started/guide/) for more details
 - Clone repo (or fork?)
+- Choose a bucket name to use in the next steps. For the purpose of this example, I'll be using `sharex-files`
 - Edit `wrangler.toml` with your `account_id`, `zone_id`, `route`, and `r2_buckets.bucket_name`
+- Run `wrangler r2 bucket create <bucket name>`
 - Generate a random string of characters - this will be used for an `AUTH_KEY` header that we'll send along with ShareX
 	- This ensures that only you can upload to your script
 - In your GitHub repository, create an `AUTH_KEY` secret, and set its value to the `AUTH_KEY` you just generated
@@ -17,7 +19,7 @@ This repo pairs with the blog post found at https://jross.me/cloudflare-r2-share
 	- Account - Workers KV Storage - Edit
 	- Account - Workers Scripts - Edit
 	- Account - Account Settings - Read
-	- Account - User Details - Read
+	- User - User Details - Read
 	- Zone - Workers Routes - Edit
 
 	- Then be sure to give it access to the application account/zone resources you want to use
