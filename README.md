@@ -48,3 +48,9 @@ For full documentation on ShareX custom uploaders, please review their documenta
 
 ![ShareX configuration for a custom Cloudflare R2 Uploader](docs/sharex.png?raw=true)
 
+
+## Video Guide
+
+For a video walkthrough on how to set everything up, including the Worker, R2, and ShareX, you can follow this great guide from @KianNH.
+
+<video src="https://videodelivery.net/3fb9e86deffbd4351b9187db92136ef5/downloads/default.mp4">
