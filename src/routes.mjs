@@ -5,7 +5,7 @@ const router = Router();
 // handle authentication
 const authMiddleware = (request, env) => {
 	const url = new URL(request.url);
-	if(request.headers?.get("x-auth-key") !== env.AUTHKEY && url.searchParams.get("authkey") !== env.AUTHKEY){
+	if(request.headers?.get("x-auth-key") !== env.AUTH_KEY && url.searchParams.get("authkey") !== env.AUTH_KEY){
 		return new Response(JSON.stringify({
 			success: false,
 			error: 'Missing auth',

@@ -4,7 +4,7 @@ This repo pairs with the blog post found at https://jross.me/cloudflare-r2-share
 
 ## Worker and R2 Setup
 
-- Run `wrangler r2 bucket create <bucket name>`. For the purpose of this example, I'll be using `sharex-uploads`.
+- Run `wrangler r2 bucket create <bucket name>`. For the purpose of this example, I'll be using `sharex-files`.
 - Clone repo (or fork?)
 - Edit `wrangler.toml` with your `account_id`, `zone_id`, `route`, and `r2_buckets.bucket_name`
 - Generate a random string of characters - this will be used for an `AUTH_KEY` header that we'll send along with ShareX
