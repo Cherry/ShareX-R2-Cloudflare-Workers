@@ -4,8 +4,7 @@ account_id = "522ed7942a6ec29727e101623a48ea76"
 workers_dev = true
 route = "r2-sharex.jross.me/*"
 zone_id = "487fd5cbd30793ca0fe54b33e538825a"
-compatibility_date = "2022-04-12"
-compatibility_flags = ["r2_public_beta_bindings"]
+compatibility_date = "2022-04-22"
 
 [build]
 command = "npm run build"
