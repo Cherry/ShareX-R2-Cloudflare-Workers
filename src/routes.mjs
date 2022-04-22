@@ -103,8 +103,12 @@ const getFile = async (request, env, ctx) => {
 	let response = await cache.match(request);
 	if(!response){
 		// no cache match, try reading from R2
-		const file = await env.R2_BUCKET.get(id);
-		if(file === null){
+		// we shouldn't need to try/catch here, but R2 seems to throw internal errrors right now when querying for a file that doesn't exist
+		let file;
+		try{
+			file = await env.R2_BUCKET.get(id);
+		}catch{}
+		if(!file){
 			return new Response(JSON.stringify({
 				success: false,
 				error: 'Object Not Found',
