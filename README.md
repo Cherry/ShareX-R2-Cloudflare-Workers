@@ -2,6 +2,14 @@
 
 This repo pairs with the blog post found at https://jross.me/cloudflare-r2-sharex-custom-uploader. It assumes some precursory knowledge about Workers, Cloudflare, and ShareX. If you have any questions, please feel free to create a discussion/issue, or submit a PR with any docs improvements! I want to extend this repo in the future and when R2 is more widely available, and document the process from start to finish.
 
+
+## Video Guide
+
+For a video walkthrough on how to set everything up, including the Worker, R2, and ShareX, you can follow this great guide from [KianNH](https://github.com/KianNH).
+
+https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
+
+
 ## Worker and R2 Setup
 
 - Ensure you have wrangler installed and configured. See [here](https://developers.cloudflare.com/workers/get-started/guide/) for more details
@@ -47,10 +55,3 @@ For full documentation on ShareX custom uploaders, please review their documenta
 - When ready, change your default destination for images (etc.) to `R2`
 
 ![ShareX configuration for a custom Cloudflare R2 Uploader](docs/sharex.png?raw=true)
-
-
-## Video Guide
-
-For a video walkthrough on how to set everything up, including the Worker, R2, and ShareX, you can follow this great guide from @KianNH.
-
-<video src="https://videodelivery.net/3fb9e86deffbd4351b9187db92136ef5/downloads/default.mp4">
