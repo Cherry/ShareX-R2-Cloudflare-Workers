@@ -13,7 +13,7 @@ https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
 ## Worker and R2 Setup
 
 - Ensure you have wrangler installed and configured. See [here](https://developers.cloudflare.com/workers/get-started/guide/) for more details
-- Clone repo (or fork?)
+- Clone repo (or fork?), and run `npm ci` to install dependencies
 - Choose a bucket name to use in the next steps. For the purpose of this example, I'll be using `sharex-files`
 - Edit `wrangler.toml` with your `account_id`, `zone_id`, `route`, and `r2_buckets.bucket_name`
 - Run `wrangler r2 bucket create <bucket name>`

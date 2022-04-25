@@ -32,8 +32,8 @@ router.post("/upload", authMiddleware, async (request, env) => {
 
 	// ensure content-length and content-type headers are present
 	const contentType = request.headers.get('content-type');
-	const length = request.headers.get('content-length');
-	if(!length){
+	const contentLength = request.headers.get('content-length');
+	if(!contentLength || !contentType){
 		return new Response(JSON.stringify({
 			success: false,
 			message: "content-length and content-type are required",
@@ -86,7 +86,6 @@ router.post("/upload", authMiddleware, async (request, env) => {
 const getFile = async (request, env, ctx) => {
 	const url = new URL(request.url);
 	const id = url.pathname.slice(6);
-	console.log('Lookup', id);
 	if(!id){
 		return new Response(JSON.stringify({
 			success: false,
