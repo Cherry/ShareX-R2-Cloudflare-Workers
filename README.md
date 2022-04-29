@@ -31,7 +31,7 @@ https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
 	- Zone - Workers Routes - Edit
 
 	- Then be sure to give it access to the application account/zone resources you want to use
-![Cloudflare API token for Wrangler R2 access](docs/cloudflare-api-token.png?raw=true)
+![Cloudflare API token for Wrangler R2 access](https://r2-sharex.jross.me/file/2022/03/f8a40b17-9005-4645-9fdb-1803085308d0.png)
 
 - If using GitHub Actions (like this repo), simply push your changes and the worker will be automatically deployed - see your Actions log for any errors.
 - (optional) If you want to publish manually, or use some other CI other than GitHub Actions, you will need to manually setup the `AUTH_KEY` secret (via the Workers UI, or `wrangler secret put`), and then run `npm run publish`.
@@ -54,4 +54,4 @@ For full documentation on ShareX custom uploaders, please review their documenta
 - Use the testers on the left hand side to test your configuration
 - When ready, change your default destination for images (etc.) to `R2`
 
-![ShareX configuration for a custom Cloudflare R2 Uploader](docs/sharex.png?raw=true)
+![ShareX configuration for a custom Cloudflare R2 Uploader](https://r2-sharex.jross.me/file/2022/03/45102741-782f-41d2-9303-8e6e70944984.png)
