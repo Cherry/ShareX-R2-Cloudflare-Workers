@@ -119,7 +119,7 @@ const getFile = async (request, env, ctx) => {
 			});
 		}
 
-		response = new Response(await file.arrayBuffer(), {
+		response = new Response(file.body, {
 			headers: {
 				'cache-control': 'public, max-age=604800',
 				'content-type': file.httpMetadata?.contentType,
