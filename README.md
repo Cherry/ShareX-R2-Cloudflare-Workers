@@ -15,7 +15,7 @@ https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
 - Ensure you have wrangler installed and configured. See [here](https://developers.cloudflare.com/workers/get-started/guide/) for more details
 - Clone repo (or fork?), and run `npm ci` to install dependencies
 - Choose a bucket name to use in the next steps. For the purpose of this example, I'll be using `sharex-files`
-- Edit `wrangler.toml` with your `account_id`, `zone_id`, `route`, and `r2_buckets.bucket_name`
+- Edit `wrangler.toml` with your `account_id`, `route`, and `r2_buckets.bucket_name`
 - Run `wrangler r2 bucket create <bucket name>`
 - Generate a random string of characters - this will be used for an `AUTH_KEY` header that we'll send along with ShareX
 	- This ensures that only you can upload to your script
