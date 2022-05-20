@@ -1,17 +1,13 @@
 name = "sharex-r2-cloudflare-workers"
-type = "javascript"
 account_id = "522ed7942a6ec29727e101623a48ea76"
 workers_dev = true
-route = "r2-sharex.jross.me/*"
-zone_id = "487fd5cbd30793ca0fe54b33e538825a"
+route = {pattern = "r2-sharex.jross.me/*", zone_name = "jross.me"}
+
 compatibility_date = "2022-04-22"
+main = "./dist/index.mjs"
 
 [build]
 command = "npm run build"
-
-[build.upload]
-format = "modules"
-main = "./index.mjs"
 
 [[r2_buckets]]
 bucket_name = "sharex-files"
