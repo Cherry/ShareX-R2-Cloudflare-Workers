@@ -27,12 +27,13 @@
 	"devDependencies": {
 		"@nodecraft/eslint-config": "18.0.0",
 		"esbuild": "0.14.39",
-		"eslint": "8.15.0",
+		"eslint": "8.16.0",
 		"eslint-plugin-import": "2.26.0",
 		"eslint-plugin-json": "3.1.0",
 		"eslint-plugin-node": "11.1.0",
 		"eslint-plugin-unicorn": "42.0.0",
-		"itty-router": "2.6.1"
+		"itty-router": "2.6.1",
+		"range-parser": "1.2.1"
 	},
 	"engines": {
 		"node": ">=16",

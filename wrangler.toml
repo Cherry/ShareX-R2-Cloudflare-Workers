@@ -11,4 +11,5 @@ command = "npm run build"
 
 [[r2_buckets]]
 bucket_name = "sharex-files"
+preview_bucket_name = "sharex-files-preview"
 binding = "R2_BUCKET"

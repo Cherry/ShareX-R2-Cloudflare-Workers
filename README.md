@@ -55,3 +55,7 @@ For full documentation on ShareX custom uploaders, please review their documenta
 - When ready, change your default destination for images (etc.) to `R2`
 
 ![ShareX configuration for a custom Cloudflare R2 Uploader](https://r2-sharex.jross.me/file/2022/03/45102741-782f-41d2-9303-8e6e70944984.png)
+
+## Acknowledgements
+
+Most of the file retrieval code has been used from https://github.com/kotx/render, since this is a fantastic example handling ranges, etags, HEAD requests, and more. Huge shoutout to [kotx](https://github.com/kotx) for this work!
