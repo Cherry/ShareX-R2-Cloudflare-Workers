@@ -58,4 +58,4 @@ For full documentation on ShareX custom uploaders, please review their documenta
 
 ## Acknowledgements
 
-Most of the file retrieval code has been used from https://github.com/kotx/render, since this is a fantastic example handling ranges, etags, HEAD requests, and more. Huge shoutout to [kotx](https://github.com/kotx) for this work!
+https://github.com/kotx/render is used to retrieve files from R2, since this is a fantastic example handling ranges, etags, HEAD requests, and more. Huge shoutout to [kotx](https://github.com/kotx) for this work!
