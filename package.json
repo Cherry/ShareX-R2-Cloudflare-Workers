@@ -15,17 +15,20 @@
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"main": "index.js",
 	"scripts": {
-		"build": "esbuild src/index.mjs --format=esm --platform=neutral --bundle --minify --sourcemap --main-fields=browser,module,main --outfile=dist/index.mjs",
-		"dev": "npx miniflare --kv-persist -w",
+		"build": "esbuild src/index.ts --format=esm --platform=neutral --bundle --minify --sourcemap --main-fields=browser,module,main --outfile=dist/index.mjs",
+		"dev": "npx wrangler dev",
 		"lint": "npm run lint:js && npm run lint:json",
-		"lint:js": "eslint \"src/**/*.{js,mjs}\"",
-		"lint:js:fix": "eslint \"src/**/*.{js,mjs}\" --fix",
+		"lint:js": "eslint \"src/**/*.{js,mjs,ts}\"",
+		"lint:js:fix": "eslint \"src/**/*.{js,mjs,ts}\" --fix",
 		"lint:json": "eslint \"**/*.json\"",
 		"publish": "wrangler publish",
 		"test": "npm run lint"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "3.11.0",
 		"@nodecraft/eslint-config": "18.0.0",
+		"@typescript-eslint/eslint-plugin": "5.26.0",
+		"@typescript-eslint/parser": "5.26.0",
 		"esbuild": "0.14.41",
 		"eslint": "8.16.0",
 		"eslint-plugin-import": "2.26.0",
@@ -33,7 +36,9 @@
 		"eslint-plugin-node": "11.1.0",
 		"eslint-plugin-unicorn": "42.0.0",
 		"itty-router": "2.6.1",
-		"render2": "0.1.2"
+		"render2": "0.1.2",
+		"typescript": "4.7.2",
+		"wrangler": "2.0.7"
 	},
 	"engines": {
 		"node": ">=16",

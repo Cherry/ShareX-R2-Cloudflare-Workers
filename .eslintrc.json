@@ -1,15 +1,18 @@
 {
 	"root": true,
 	"extends": [
-		"@nodecraft"
+		"@nodecraft",
+		"plugin:@typescript-eslint/recommended"
 	],
+	"parser": "@typescript-eslint/parser",
 	"plugins": [
 		"json"
 	],
 	"rules": {
 		"no-var": "error",
 		"prefer-const": "error",
-		"node/no-unsupported-features/es-syntax": "off"
+		"node/no-unsupported-features/es-syntax": "off",
+		"node/no-missing-import": "off"
 	},
 	"parserOptions": {
 		"allowImportExportEverywhere": true,
