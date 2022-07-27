@@ -34,7 +34,8 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 		fileslug = crypto.randomUUID();
 	}
 	const date = new Date();
-	const folder = `${date.getFullYear()}/${('0' + date.getMonth()).slice(-2)}`;
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const folder = `${date.getFullYear()}/${month}`;
 	const filename = `${folder}/${fileslug}`;
 
 	// ensure content-length and content-type headers are present
