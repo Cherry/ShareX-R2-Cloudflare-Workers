@@ -25,6 +25,16 @@ const authMiddleware = (request: Request, env: Env): Response | undefined => {
 	}
 };
 
+const notFound = error => new Response(JSON.stringify({
+	success: false,
+	error: error ?? 'Not Found',
+}), {
+	status: 404,
+	headers: {
+		"content-type": "application/json",
+	},
+});
+
 // handle upload
 router.post("/upload", authMiddleware, async (request: Request, env: Env): Promise<Response> => {
 	const url = new URL(request.url);
@@ -81,9 +91,16 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 	const returnUrl = new URL(request.url);
 	returnUrl.searchParams.delete('filename');
 	returnUrl.pathname = `/file/${filename}`;
+
+	const deleteUrl = new URL(request.url);
+	deleteUrl.pathname = `/delete`;
+	deleteUrl.searchParams.set("authkey", env.AUTH_KEY);
+	deleteUrl.searchParams.set("filename", filename);
+
 	return new Response(JSON.stringify({
 		success: true,
 		image: returnUrl.href,
+		deleteUrl: deleteUrl.href,
 	}), {
 		headers: {
 			"content-type": "application/json",
@@ -95,15 +112,7 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 const getFile = async (request: Request, env: Env, ctx: ExecutionContext): Promise<Response> => {
 	const url = new URL(request.url);
 	const id = url.pathname.slice(6);
-	const notFound = error => new Response(JSON.stringify({
-		success: false,
-		error: error ?? 'Not Found',
-	}), {
-		status: 404,
-		headers: {
-			"content-type": "application/json",
-		},
-	});
+
 	if(!id){
 		return notFound('Missing ID');
 	}
@@ -114,6 +123,43 @@ const getFile = async (request: Request, env: Env, ctx: ExecutionContext): Promi
 		CACHE_CONTROL: 'public, max-age=604800',
 	}, ctx);
 };
+
+// handle file deletion
+router.get("/delete", authMiddleware, async (request: Request, env: Env): Promise<Response> => {
+	const url = new URL(request.url);
+	const filename = url.searchParams.get('filename');
+
+	if(!filename){
+		return notFound('Missing filename');
+	}
+
+	// write to R2
+	try{
+		await env.R2_BUCKET.delete(filename);
+		return new Response(JSON.stringify({
+			success: true,
+		}), {
+			headers: {
+				"content-type": "application/json",
+			},
+		});
+	}catch(error){
+		return new Response(JSON.stringify({
+			success: false,
+			message: "Error occurred deleting from R2",
+			error: {
+				name: error.name,
+				message: error.message,
+			},
+		}), {
+			status: 500,
+			headers: {
+				"content-type": "application/json",
+			},
+		});
+	}
+});
+
 router.get("/upload/:id", getFile);
 router.get("/file/*", getFile);
 router.head("/file/*", getFile);

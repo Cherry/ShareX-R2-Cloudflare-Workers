@@ -50,11 +50,12 @@ For full documentation on ShareX custom uploaders, please review their documenta
 - Leave URL paramaters blank
 - (optional) Add a new URL paramater called `filename`, and set it to `{filename}`. If this is set, the original filename will be used when storing to R2, otherwise a random ID will be generated
 - Add a new header under `Headers` called `x-auth-key`, and set it to the secure string you generated earlier
-- Under `Parse Response`, scroll down to `URL`, and set this to `{json:image}`
+- Set `URL` to `{json:image}`
+- Set `Deletion URL` to `{json:deleteUrl}`
 - Use the testers on the left hand side to test your configuration
 - When ready, change your default destination for images (etc.) to `R2`
 
-![ShareX configuration for a custom Cloudflare R2 Uploader](https://r2-sharex.jross.me/file/2022/03/45102741-782f-41d2-9303-8e6e70944984.png)
+![ShareX configuration for a custom Cloudflare R2 Uploader](./.github/sharex-config.png)
 
 ## Acknowledgements
 
