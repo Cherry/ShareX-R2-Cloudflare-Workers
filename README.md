@@ -48,9 +48,9 @@ For full documentation on ShareX custom uploaders, please review their documenta
 - Set the `Request URL` to the URL of your worker, with `/upload` appended, such as `https://r2-sharex.jross.me/upload`
 - Set the `Body` to `Binary`
 - Leave URL paramaters blank
-- (optional) Add a new URL paramater called `filename`, and set it to `$filename$`. If this is set, the original filename will be used when storing to R2, otherwise a random ID will be generated
+- (optional) Add a new URL paramater called `filename`, and set it to `{filename}`. If this is set, the original filename will be used when storing to R2, otherwise a random ID will be generated
 - Add a new header under `Headers` called `x-auth-key`, and set it to the secure string you generated earlier
-- Under `Parse Response`, scroll down to `URL`, and set this to `$json:image$`
+- Under `Parse Response`, scroll down to `URL`, and set this to `{json:image}`
 - Use the testers on the left hand side to test your configuration
 - When ready, change your default destination for images (etc.) to `R2`
 
