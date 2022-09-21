@@ -5,6 +5,8 @@ interface Env {
 	AUTH_KEY: string;
 	R2_BUCKET: R2Bucket;
 	CACHE_CONTROL?: string;
+	CUSTOM_PUBLIC_BUCKET_DOMAIN?: string
+	ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET?: boolean;
 }
 
 const router = Router();
@@ -91,6 +93,10 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 	const returnUrl = new URL(request.url);
 	returnUrl.searchParams.delete('filename');
 	returnUrl.pathname = `/file/${filename}`;
+	if(env.CUSTOM_PUBLIC_BUCKET_DOMAIN){
+		returnUrl.host = env.CUSTOM_PUBLIC_BUCKET_DOMAIN;
+		returnUrl.pathname = filename;
+	}
 
 	const deleteUrl = new URL(request.url);
 	deleteUrl.pathname = `/delete`;
@@ -110,6 +116,9 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 
 // handle file retrieval
 const getFile = async (request: Request, env: Env, ctx: ExecutionContext): Promise<Response> => {
+	if(env.ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET){
+		return notFound("Not Found");
+	}
 	const url = new URL(request.url);
 	const id = url.pathname.slice(6);
 
