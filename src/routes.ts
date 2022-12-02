@@ -142,8 +142,11 @@ router.get("/delete", authMiddleware, async (request: Request, env: Env): Promis
 		return notFound('Missing filename');
 	}
 
-	// write to R2
+	// delete from R2
 	try{
+		const cache = caches.default;
+		await cache.delete(new Request(`https://r2host/${filename}`, request));
+
 		await env.R2_BUCKET.delete(filename);
 		return new Response(JSON.stringify({
 			success: true,
