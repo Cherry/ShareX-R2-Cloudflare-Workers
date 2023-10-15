@@ -1,4 +1,4 @@
-import {Router} from 'itty-router';
+import {Router, IRequestStrict} from 'itty-router';
 import render2 from 'render2';
 
 interface Env {
@@ -9,19 +9,20 @@ interface Env {
 	ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET?: boolean;
 }
 
-const router = Router();
+type CF = [env: Env, ctx: ExecutionContext];
+const router = Router<IRequestStrict, CF>();
 
 // handle authentication
-const authMiddleware = (request: Request, env: Env): Response | undefined => {
+const authMiddleware = (request: IRequestStrict, env: Env) => {
 	const url = new URL(request.url);
-	if(request.headers?.get("x-auth-key") !== env.AUTH_KEY && url.searchParams.get("authkey") !== env.AUTH_KEY){
+	if(request.headers?.get('x-auth-key') !== env.AUTH_KEY && url.searchParams.get('authkey') !== env.AUTH_KEY) {
 		return new Response(JSON.stringify({
 			success: false,
 			error: 'Missing auth',
 		}), {
 			status: 401,
 			headers: {
-				"content-type": "application/json",
+				'content-type': 'application/json',
 			},
 		});
 	}
@@ -33,15 +34,15 @@ const notFound = error => new Response(JSON.stringify({
 }), {
 	status: 404,
 	headers: {
-		"content-type": "application/json",
+		'content-type': 'application/json',
 	},
 });
 
 // handle upload
-router.post("/upload", authMiddleware, async (request: Request, env: Env): Promise<Response> => {
+router.post('/upload', authMiddleware, async (request, env) => {
 	const url = new URL(request.url);
 	let fileslug = url.searchParams.get('filename');
-	if(!fileslug){
+	if(!fileslug) {
 		// generate random filename UUID if not set
 		fileslug = crypto.randomUUID();
 	}
@@ -53,14 +54,14 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 	// ensure content-length and content-type headers are present
 	const contentType = request.headers.get('content-type');
 	const contentLength = request.headers.get('content-length');
-	if(!contentLength || !contentType){
+	if(!contentLength || !contentType) {
 		return new Response(JSON.stringify({
 			success: false,
-			message: "content-length and content-type are required",
+			message: 'content-length and content-type are required',
 		}), {
 			status: 400,
 			headers: {
-				"content-type": "application/json",
+				'content-type': 'application/json',
 			},
 		});
 	}
@@ -73,10 +74,10 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 				cacheControl: 'public, max-age=604800',
 			},
 		});
-	}catch(error){
+	}catch(error) {
 		return new Response(JSON.stringify({
 			success: false,
-			message: "Error occured writing to R2",
+			message: 'Error occured writing to R2',
 			error: {
 				name: error.name,
 				message: error.message,
@@ -84,7 +85,7 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 		}), {
 			status: 500,
 			headers: {
-				"content-type": "application/json",
+				'content-type': 'application/json',
 			},
 		});
 	}
@@ -93,15 +94,15 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 	const returnUrl = new URL(request.url);
 	returnUrl.searchParams.delete('filename');
 	returnUrl.pathname = `/file/${filename}`;
-	if(env.CUSTOM_PUBLIC_BUCKET_DOMAIN){
+	if(env.CUSTOM_PUBLIC_BUCKET_DOMAIN) {
 		returnUrl.host = env.CUSTOM_PUBLIC_BUCKET_DOMAIN;
 		returnUrl.pathname = filename;
 	}
 
 	const deleteUrl = new URL(request.url);
-	deleteUrl.pathname = `/delete`;
-	deleteUrl.searchParams.set("authkey", env.AUTH_KEY);
-	deleteUrl.searchParams.set("filename", filename);
+	deleteUrl.pathname = '/delete';
+	deleteUrl.searchParams.set('authkey', env.AUTH_KEY);
+	deleteUrl.searchParams.set('filename', filename);
 
 	return new Response(JSON.stringify({
 		success: true,
@@ -109,20 +110,20 @@ router.post("/upload", authMiddleware, async (request: Request, env: Env): Promi
 		deleteUrl: deleteUrl.href,
 	}), {
 		headers: {
-			"content-type": "application/json",
+			'content-type': 'application/json',
 		},
 	});
 });
 
 // handle file retrieval
-const getFile = async (request: Request, env: Env, ctx: ExecutionContext): Promise<Response> => {
-	if(env.ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET){
-		return notFound("Not Found");
+const getFile = async (request: IRequestStrict, env: Env, ctx: ExecutionContext) => {
+	if(env.ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET) {
+		return notFound('Not Found');
 	}
 	const url = new URL(request.url);
 	const id = url.pathname.slice(6);
 
-	if(!id){
+	if(!id) {
 		return notFound('Missing ID');
 	}
 
@@ -134,11 +135,11 @@ const getFile = async (request: Request, env: Env, ctx: ExecutionContext): Promi
 };
 
 // handle file deletion
-router.get("/delete", authMiddleware, async (request: Request, env: Env): Promise<Response> => {
+router.get('/delete', authMiddleware, async (request, env) => {
 	const url = new URL(request.url);
 	const filename = url.searchParams.get('filename');
 
-	if(!filename){
+	if(!filename) {
 		return notFound('Missing filename');
 	}
 
@@ -152,13 +153,13 @@ router.get("/delete", authMiddleware, async (request: Request, env: Env): Promis
 			success: true,
 		}), {
 			headers: {
-				"content-type": "application/json",
+				'content-type': 'application/json',
 			},
 		});
-	}catch(error){
+	}catch(error) {
 		return new Response(JSON.stringify({
 			success: false,
-			message: "Error occurred deleting from R2",
+			message: 'Error occurred deleting from R2',
 			error: {
 				name: error.name,
 				message: error.message,
@@ -166,17 +167,17 @@ router.get("/delete", authMiddleware, async (request: Request, env: Env): Promis
 		}), {
 			status: 500,
 			headers: {
-				"content-type": "application/json",
+				'content-type': 'application/json',
 			},
 		});
 	}
 });
 
-router.get("/upload/:id", getFile);
-router.get("/file/*", getFile);
-router.head("/file/*", getFile);
+router.get('/upload/:id', getFile);
+router.get('/file/*', getFile);
+router.head('/file/*', getFile);
 
-router.get('/files/list', authMiddleware, async (request: Request, env: Env): Promise<Response> => {
+router.get('/files/list', authMiddleware, async (request, env) => {
 	const items = await env.R2_BUCKET.list({limit: 1000});
 	return new Response(JSON.stringify(items, null, 2), {
 		headers: {
@@ -192,7 +193,7 @@ router.all('*', (): Response => new Response(JSON.stringify({
 }), {
 	status: 404,
 	headers: {
-		"content-type": "application/json",
+		'content-type': 'application/json',
 	},
 }));
 
