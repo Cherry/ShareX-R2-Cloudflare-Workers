@@ -1,11 +1,11 @@
-import {Router, IRequestStrict} from 'itty-router';
+import { IRequestStrict, Router } from 'itty-router';
 import render2 from 'render2';
 
 interface Env {
 	AUTH_KEY: string;
 	R2_BUCKET: R2Bucket;
 	CACHE_CONTROL?: string;
-	CUSTOM_PUBLIC_BUCKET_DOMAIN?: string
+	CUSTOM_PUBLIC_BUCKET_DOMAIN?: string;
 	ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET?: boolean;
 }
 
@@ -15,7 +15,7 @@ const router = Router<IRequestStrict, CF>();
 // handle authentication
 const authMiddleware = (request: IRequestStrict, env: Env) => {
 	const url = new URL(request.url);
-	if(request.headers?.get('x-auth-key') !== env.AUTH_KEY && url.searchParams.get('authkey') !== env.AUTH_KEY) {
+	if (request.headers?.get('x-auth-key') !== env.AUTH_KEY && url.searchParams.get('authkey') !== env.AUTH_KEY) {
 		return new Response(JSON.stringify({
 			success: false,
 			error: 'Missing auth',
@@ -42,7 +42,7 @@ const notFound = error => new Response(JSON.stringify({
 router.post('/upload', authMiddleware, async (request, env) => {
 	const url = new URL(request.url);
 	let fileslug = url.searchParams.get('filename');
-	if(!fileslug) {
+	if (!fileslug) {
 		// generate random filename UUID if not set
 		fileslug = crypto.randomUUID();
 	}
@@ -54,7 +54,7 @@ router.post('/upload', authMiddleware, async (request, env) => {
 	// ensure content-length and content-type headers are present
 	const contentType = request.headers.get('content-type');
 	const contentLength = request.headers.get('content-length');
-	if(!contentLength || !contentType) {
+	if (!contentLength || !contentType) {
 		return new Response(JSON.stringify({
 			success: false,
 			message: 'content-length and content-type are required',
@@ -67,14 +67,14 @@ router.post('/upload', authMiddleware, async (request, env) => {
 	}
 
 	// write to R2
-	try{
+	try {
 		await env.R2_BUCKET.put(filename, request.body, {
 			httpMetadata: {
 				contentType: contentType,
 				cacheControl: 'public, max-age=604800',
 			},
 		});
-	}catch(error) {
+	} catch (error) {
 		return new Response(JSON.stringify({
 			success: false,
 			message: 'Error occured writing to R2',
@@ -94,7 +94,7 @@ router.post('/upload', authMiddleware, async (request, env) => {
 	const returnUrl = new URL(request.url);
 	returnUrl.searchParams.delete('filename');
 	returnUrl.pathname = `/file/${filename}`;
-	if(env.CUSTOM_PUBLIC_BUCKET_DOMAIN) {
+	if (env.CUSTOM_PUBLIC_BUCKET_DOMAIN) {
 		returnUrl.host = env.CUSTOM_PUBLIC_BUCKET_DOMAIN;
 		returnUrl.pathname = filename;
 	}
@@ -117,13 +117,13 @@ router.post('/upload', authMiddleware, async (request, env) => {
 
 // handle file retrieval
 const getFile = async (request: IRequestStrict, env: Env, ctx: ExecutionContext) => {
-	if(env.ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET) {
+	if (env.ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET) {
 		return notFound('Not Found');
 	}
 	const url = new URL(request.url);
 	const id = url.pathname.slice(6);
 
-	if(!id) {
+	if (!id) {
 		return notFound('Missing ID');
 	}
 
@@ -139,12 +139,12 @@ router.get('/delete', authMiddleware, async (request, env) => {
 	const url = new URL(request.url);
 	const filename = url.searchParams.get('filename');
 
-	if(!filename) {
+	if (!filename) {
 		return notFound('Missing filename');
 	}
 
 	// delete from R2
-	try{
+	try {
 		const cache = caches.default;
 		await cache.delete(new Request(`https://r2host/${filename}`, request));
 
@@ -156,7 +156,7 @@ router.get('/delete', authMiddleware, async (request, env) => {
 				'content-type': 'application/json',
 			},
 		});
-	}catch(error) {
+	} catch (error) {
 		return new Response(JSON.stringify({
 			success: false,
 			message: 'Error occurred deleting from R2',
@@ -178,7 +178,7 @@ router.get('/file/*', getFile);
 router.head('/file/*', getFile);
 
 router.get('/files/list', authMiddleware, async (request, env) => {
-	const items = await env.R2_BUCKET.list({limit: 1000});
+	const items = await env.R2_BUCKET.list({ limit: 1000 });
 	return new Response(JSON.stringify(items, null, 2), {
 		headers: {
 			'content-type': 'application/json',
@@ -197,4 +197,4 @@ router.all('*', (): Response => new Response(JSON.stringify({
 	},
 }));
 
-export {router};
+export { router };
