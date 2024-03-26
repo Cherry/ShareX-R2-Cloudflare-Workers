@@ -1,13 +1,8 @@
 import { IRequestStrict, Router } from 'itty-router';
 import render2 from 'render2';
 
-interface Env {
-	AUTH_KEY: string;
-	R2_BUCKET: R2Bucket;
-	CACHE_CONTROL?: string;
-	CUSTOM_PUBLIC_BUCKET_DOMAIN?: string;
-	ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET?: boolean;
-}
+import { Env } from './types';
+
 
 type CF = [env: Env, ctx: ExecutionContext];
 const router = Router<IRequestStrict, CF>();
