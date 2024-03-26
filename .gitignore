@@ -10,4 +10,3 @@ node_modules/
 .cargo-ok
 .env
 .mf
-test

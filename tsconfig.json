@@ -6,5 +6,6 @@
 		"lib": ["ES2020"],
 		"types": ["@cloudflare/workers-types"]
 	},
-	"include": ["src/**/*.ts"]
+	"include": ["src/**/*.ts"],
+	"exclude": ["test"]
 }
