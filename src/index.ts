@@ -1,5 +1,5 @@
 import { router } from './routes';
 
 export default {
-	fetch: router.handle,
+	fetch: router.fetch,
 };
