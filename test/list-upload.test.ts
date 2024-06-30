@@ -54,7 +54,7 @@ describe('worker - list upload', () => {
 		const folder = `${date.getFullYear()}/${month}`;
 
 		expect(results.objects).toHaveLength(4);
-		const sortedBuKey = results.objects.sort((itemA, itemN) => itemA.key.localeCompare(itemN.key));
+		const sortedBuKey = results.objects.sort((itemA: R2Object, itemN: R2Object) => itemA.key.localeCompare(itemN.key));
 		expect(sortedBuKey).toEqual(
 			[
 				expect.objectContaining({ key: `${folder}/test-upload` }),

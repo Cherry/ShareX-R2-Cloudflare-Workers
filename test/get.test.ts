@@ -61,6 +61,6 @@ describe('worker - get', () => {
 		expect(response.status).toBe(200);
 		expect(response.headers.get('content-type')).toBe('application/octet-stream');
 		expect(response.headers.get('content-length')).toBe('3');
-		expect(await response.arrayBuffer()).toEqual(new Uint8Array([1, 2, 3]).buffer);
+		expect(await response.arrayBuffer()).toStrictEqual(new Uint8Array([1, 2, 3]).buffer);
 	});
 });

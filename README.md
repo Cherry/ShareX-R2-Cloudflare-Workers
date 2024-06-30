@@ -20,7 +20,7 @@ https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
 - Generate a random string of characters - this will be used for an `AUTH_KEY` header that we'll send along with ShareX
 	- This ensures that only you can upload to your script
 - In your GitHub repository, create an `AUTH_KEY` secret, and set its value to the `AUTH_KEY` you just generated
-	- This will be used by the GitHub Action to publish the worker
+	- This will be used by the GitHub Action to deploy the worker
 - In your GitHub repository, create a `CF_API_TOKEN` secret, and set its value to a Cloudflare API token with the following permissions:
 	- Account - Workers R2 Storage - Edit
 	- Account - Workers Tail - Read
@@ -34,7 +34,7 @@ https://watch.videodelivery.net/3fb9e86deffbd4351b9187db92136ef5
 ![Cloudflare API token for Wrangler R2 access](https://r2-sharex.jross.me/file/2022/03/f8a40b17-9005-4645-9fdb-1803085308d0.png)
 
 - If using GitHub Actions (like this repo), simply push your changes and the worker will be automatically deployed - see your Actions log for any errors.
-- (optional) If you want to publish manually, or use some other CI other than GitHub Actions, you will need to manually setup the `AUTH_KEY` secret (via the Workers UI, or `wrangler secret put`), and then run `npm run publish`.
+- (optional) If you want to deploy manually, or use some other CI other than GitHub Actions, you will need to manually setup the `AUTH_KEY` secret (via the Workers UI, or `wrangler secret put`), and then run `npm run deploy`.
 
 
 ## ShareX Setup
