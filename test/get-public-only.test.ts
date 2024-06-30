@@ -37,6 +37,6 @@ describe('worker - get ONLY_ALLOW_ACCESS_TO_PUBLIC_BUCKET', () => {
 		const response2 = await worker.fetch(request2, env, ctx2);
 		await waitOnExecutionContext(ctx2);
 		expect(response2.status).toBe(200);
-		expect(await response2.arrayBuffer()).toEqual(new Uint8Array([1, 2, 3]).buffer);
+		expect(await response2.arrayBuffer()).toStrictEqual(new Uint8Array([1, 2, 3]).buffer);
 	});
 });

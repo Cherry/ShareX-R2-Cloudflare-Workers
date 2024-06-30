@@ -1,7 +1,8 @@
-import { IRequestStrict, Router } from 'itty-router';
+import { Router } from 'itty-router';
 import render2 from 'render2';
 
-import { Env } from './types';
+import type { Env } from './types';
+import type { IRequestStrict } from 'itty-router';
 
 
 type CF = [env: Env, ctx: ExecutionContext];
@@ -23,7 +24,7 @@ const authMiddleware = (request: IRequestStrict, env: Env) => {
 	}
 };
 
-const notFound = error => new Response(JSON.stringify({
+const notFound = (error: string) => new Response(JSON.stringify({
 	success: false,
 	error: error ?? 'Not Found',
 }), {
@@ -32,6 +33,18 @@ const notFound = error => new Response(JSON.stringify({
 		'content-type': 'application/json',
 	},
 });
+
+const getError = (error: unknown) => {
+	const errorObj = {
+		name: 'Error',
+		message: 'Unknown internal error',
+	};
+	if (error instanceof Error) {
+		errorObj.name = error.name;
+		errorObj.message = error.message;
+	}
+	return errorObj;
+};
 
 // handle upload
 router.post('/upload', authMiddleware, async (request, env) => {
@@ -73,10 +86,7 @@ router.post('/upload', authMiddleware, async (request, env) => {
 		return new Response(JSON.stringify({
 			success: false,
 			message: 'Error occured writing to R2',
-			error: {
-				name: error.name,
-				message: error.message,
-			},
+			error: getError(error),
 		}), {
 			status: 500,
 			headers: {
@@ -155,10 +165,7 @@ router.get('/delete', authMiddleware, async (request, env) => {
 		return new Response(JSON.stringify({
 			success: false,
 			message: 'Error occurred deleting from R2',
-			error: {
-				name: error.name,
-				message: error.message,
-			},
+			error: getError(error),
 		}), {
 			status: 500,
 			headers: {

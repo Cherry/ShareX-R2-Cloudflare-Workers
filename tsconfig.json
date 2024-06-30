@@ -1,10 +1,16 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
-		"module": "ES2020",
-		"moduleResolution": "node",
-		"lib": ["ES2020"],
-		"types": ["@cloudflare/workers-types"]
+		"target": "ESNext",
+		"module": "ES2022",
+		"moduleResolution": "bundler",
+		"lib": ["ES2023"],
+		"types": ["@cloudflare/workers-types/experimental"],
+		"strict": true,
+		"strictNullChecks": true,
+		"isolatedModules": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": false,
+		"skipLibCheck": true
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["test"]
