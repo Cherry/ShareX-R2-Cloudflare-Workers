@@ -33,4 +33,21 @@ describe('worker - delete', () => {
 			}
 		`);
 	});
+
+	it('delete: after deleting, file is gone', async () => {
+		const request = new IncomingRequest('https://i.james.pub/delete?filename=test2.txt', {
+			headers: {
+				'x-auth-key': 'test',
+			},
+		});
+		const ctx = createExecutionContext();
+		await worker.fetch(request, env, ctx);
+		await waitOnExecutionContext(ctx);
+
+		const request2 = new IncomingRequest('https://i.james.pub/file/test2.txt');
+		const ctx2 = createExecutionContext();
+		const response2 = await worker.fetch(request2, env, ctx2);
+		await waitOnExecutionContext(ctx);
+		expect(response2.status).toBe(404);
+	});
 });

@@ -63,4 +63,23 @@ describe('worker - get', () => {
 		expect(response.headers.get('content-length')).toBe('3');
 		expect(await response.arrayBuffer()).toStrictEqual(new Uint8Array([1, 2, 3]).buffer);
 	});
+
+	it('file: responds with cache correctly', async () => {
+		const request = new IncomingRequest('https://i.james.pub/file/test2.txt');
+		const ctx = createExecutionContext();
+		const response = await worker.fetch(request, env, ctx);
+		await waitOnExecutionContext(ctx);
+		expect(response.status).toBe(200);
+		expect(response.headers.get('content-type')).toBe('application/octet-stream');
+		expect(response.headers.get('content-length')).toBe('3');
+		expect(await response.arrayBuffer()).toStrictEqual(new Uint8Array([1, 2, 3]).buffer);
+
+		// make another request, should now be cached
+		const request2 = new IncomingRequest('https://i.james.pub/file/test2.txt');
+		const ctx2 = createExecutionContext();
+		const response2 = await worker.fetch(request2, env, ctx2);
+		await waitOnExecutionContext(ctx2);
+		expect(response2.status).toBe(200);
+		expect(response2.headers.get('cf-cache-status')).toBe('HIT');
+	});
 });
