@@ -30,21 +30,21 @@
 		"test": "vitest"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.5.40",
-		"@cloudflare/workers-types": "4.20241230.0",
-		"@nodecraft/eslint-config": "44.3.0",
-		"@typescript-eslint/eslint-plugin": "8.19.0",
-		"@typescript-eslint/parser": "8.19.0",
-		"esbuild": "0.24.2",
+		"@cloudflare/vitest-pool-workers": "https://prerelease-registry.devprod.cloudflare.dev/workers-sdk/runs/13056817332/npm-package-cloudflare-vitest-pool-workers-7923",
+		"@cloudflare/workers-types": "4.20250224.0",
+		"@nodecraft/eslint-config": "45.0.0",
+		"@typescript-eslint/eslint-plugin": "8.25.0",
+		"@typescript-eslint/parser": "8.25.0",
+		"esbuild": "0.25.0",
 		"eslint": "8.57.1",
 		"eslint-plugin-import": "2.31.0",
 		"eslint-plugin-json": "4.0.1",
 		"eslint-plugin-unicorn": "56.0.1",
 		"itty-router": "5.0.18",
-		"render2": "1.4.1",
-		"typescript": "5.7.2",
-		"vitest": "2.1.8",
-		"wrangler": "3.99.0"
+		"typescript": "5.7.3",
+		"render2": "1.4.2",
+		"vitest": "3.0.7",
+		"wrangler": "3.111.0"
 	},
 	"engines": {
 		"node": ">=20",
