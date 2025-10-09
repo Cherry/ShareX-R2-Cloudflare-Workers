@@ -8,10 +8,7 @@ routes = [
 
 compatibility_date = "2022-10-31"
 compatibility_flags = ["nodejs_compat"]
-main = "./dist/index.mjs"
-
-[build]
-command = "npm run build"
+main = "./src/index.ts"
 
 [[r2_buckets]]
 bucket_name = "sharex-files"
