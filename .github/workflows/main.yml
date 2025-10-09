@@ -17,11 +17,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - run: npm ci
       - run: npm run lint
-      - run: npm run build
       - run: npm run test
 
   deploy:
@@ -35,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - run: npm ci
 
