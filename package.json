@@ -27,8 +27,8 @@
 		"test": "vitest"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "0.9.12",
-		"@cloudflare/workers-types": "4.20251008.0",
+		"@cloudflare/vitest-pool-workers": "0.13.0",
+		"@cloudflare/workers-types": "4.20260312.1",
 		"@nodecraft/eslint-config": "47.0.2",
 		"@stylistic/eslint-plugin": "5.10.0",
 		"eslint": "10.0.3",
@@ -40,7 +40,7 @@
 		"itty-router": "5.0.22",
 		"typescript": "5.9.3",
 		"render2": "1.5.0",
-		"vitest": "3.2.4",
+		"vitest": "4.1.0",
 		"wrangler": "4.42.2"
 	},
 	"engines": {
