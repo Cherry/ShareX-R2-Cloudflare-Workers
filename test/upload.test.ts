@@ -69,4 +69,3 @@ describe('worker - upload', () => {
 		expect(results.deleteUrl).toBe(`https://i.james.pub/delete?${urlParams}`);
 	});
 });
-
